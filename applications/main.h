@@ -135,10 +135,11 @@ typedef __packed struct
 
 typedef __packed struct
 {
-    uint8_t status;
-    uint8_t rssi;
-    uint16_t major;
-    uint16_t minor;
+    uint8_t  tag_id[4];
+    uint8_t  g_sensor[6];
+    uint8_t  temp[2];
+    uint8_t  vbat[2];
+    uint8_t  rssi;
 }bletg_info_t;
 
 typedef __packed struct

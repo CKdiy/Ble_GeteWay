@@ -771,19 +771,19 @@ static void BleSearchTagCmd(uint8_t cmd, uint8_t*payload_buf, uint16_t payload_l
                 Save_Pos = j;
                 continue;
             }
-                
-            if( (tag_record[j].tag_info.major == ((bletg_info_t*)payload_buf)->major) && (tag_record[j].tag_info.minor == ((bletg_info_t*)payload_buf)->minor) )
+			
+            if( !memcmp((void *)&tag_record[j].tag_info.tag_id[0], &((bletg_info_t *)payload_buf)->tag_id[0], sizeof(uint32_t) ))
             {
-                memcpy((uint8_t*)&(tag_record[j].tag_info),payload_buf,sizeof(bletg_info_t));
+                memcpy((uint8_t*)&(tag_record[j].tag_info.tag_id[0]),  &((bletg_info_t *)payload_buf)->tag_id[0], sizeof(bletg_info_t) );
                 tag_record[j].lst_recv_time = get_current_tick();
                 tag_record[j].TAG_HAVING = 0x01;
-                break;
-            }
+                break;				
+            }              
         }
         
         if( (j == MAX_TAG_COUNTER) && (tag_counter < MAX_TAG_COUNTER))
         {
-            memcpy((uint8_t*)&(tag_record[Save_Pos].tag_info),payload_buf,sizeof(bletg_info_t));
+            memcpy((uint8_t*)&(tag_record[Save_Pos].tag_info.tag_id[0]), &((bletg_info_t *)payload_buf)->tag_id[0], sizeof(bletg_info_t));
             tag_record[Save_Pos].lst_recv_time = get_current_tick();
             tag_record[Save_Pos].TAG_HAVING = 0x01;
             tag_counter++;
